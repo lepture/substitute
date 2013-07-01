@@ -6,7 +6,6 @@ var debug = require('debug')('proximg');
 
 var version = require('./package').version;
 var viaHeader = 'Proxy Image ' + version;
-var userAgent = viaHeader;
 
 var currentConnections = 0;
 var totalConnections = 0;
@@ -38,11 +37,13 @@ function createServer(secretKey, maxRedirects) {
     }
 
     var headers = {
-      'Via': viaHeader,
-      'User-Agent': userAgent,
-      'Accept': req.headers.accept || 'image/*',
-      'Accept-Encoding': req.headers['accept-encoding']
+      'via': viaHeader,
+      'user-agent': req.headers['user-agent'],
+      'accept': req.headers.accept || 'image/*',
     };
+    if (req.headers['accept-encoding']) {
+      headers['accept-encoding'] = req.headers['accept-encoding'];
+    }
     delete req.headers.cookie;
     var uri = url.parse(req.url);
     var urlpath = uri.pathname.replace(/^\//, '');
@@ -63,6 +64,7 @@ function proxy(uri, headers, resp, redirects) {
 
   headers.host = uri.host;
   uri.headers = headers;
+  uri.agent = false;
 
   http.get(uri, function(imgResp) {
     // only allow images < 5M
