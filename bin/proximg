@@ -52,6 +52,7 @@ function main(argv) {
   }
   var createServer = require('../');
   var server = createServer(options.secret, options.redirects);
+  console.log('Start serving at http://localhost:' + options.bind);
   server.listen(options.bind);
 }
 

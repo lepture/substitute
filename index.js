@@ -2,7 +2,6 @@ var http = require('http');
 var url = require('url');
 var crypto = require('crypto');
 var format = require('util').format;
-var debug = require('debug')('proximg');
 
 var version = require('./package').version;
 var viaHeader = 'Proxy Image ' + version;
@@ -17,7 +16,6 @@ const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(
 
 function createServer(secretKey, maxRedirects) {
   var server = http.createServer(function(req, resp) {
-    debug('%s - %s', req.method, req.url);
     if (req.method != 'GET' || req.url === '/') {
       resp.writeHead(200);
       return resp.end('humor');
@@ -46,8 +44,19 @@ function createServer(secretKey, maxRedirects) {
     }
     delete req.headers.cookie;
     var uri = url.parse(req.url);
-    var urlpath = uri.pathname.replace(/^\//, '');
-    return proxy(urlpath, headers, resp, maxRedirects || 4);
+    var ref = uri.pathname.replace(/^\//, '').split("/", 2);
+    var digest = ref[0], encodedUri = ref[1];
+    if (digest && encodedUri) {
+      var decodedUri = decodeURIComponent(encodedUri);
+      var md5 = crypto.createHash('md5');
+      md5.update(secretKey + decodedUri);
+      if (md5.digest('hex') !== digest) {
+        return abort404('Digest does not match');
+      }
+      return proxy(decodedUri, headers, resp, maxRedirects || 4);
+    } else {
+      return abort404('Missing pathname');
+    }
   });
   return server;
 }
@@ -120,7 +129,6 @@ function proxy(uri, headers, resp, redirects) {
           newUri.host = newUri.hostname = uri.hostname;
           newUri.protocol = uri.protocol;
         }
-        debug('redirect %s', newUrl);
         return proxy(newUri, headers, resp, redirects - 1);
       case 304:
         resp.writeHead(304, newHeaders);
@@ -135,7 +143,6 @@ function proxy(uri, headers, resp, redirects) {
 
 function abort404(resp, msg) {
   msg = msg || 'Not Found';
-  debug('404 %s', msg);
   resp.writeHead(404);
   finish(resp, msg);
 }

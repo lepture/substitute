@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "author": "Hsiaoming Yang <me@lepture.com>",
   "dependencies": {
-    "debug": "*"
   },
   "bin": {
     "proximg": "bin/proximg"
