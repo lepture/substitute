@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+
+main(process.argv.slice(2));
+
+function main(argv) {
+  var options = {
+    bind: 8000,
+    secret: '0x24FEEDFACEDEADBEEFCAFE',
+    redirects: 4
+  };
+
+  var getArg = function() {
+    var args = argv.shift();
+    args = args.split('=');
+    if (args.length > 1) {
+      argv.unshit(args.slice(1).join('='));
+    }
+    return args[0];
+  };
+
+  var arg, remains = [];
+
+  while (argv.length) {
+    arg = getArg();
+    switch(arg) {
+      case '-h':
+      case '--help':
+        helpMessage();
+        break;
+      case '-V':
+      case '--version':
+        versionMessage();
+        break;
+
+      case '-b':
+      case '--bind':
+        options.bind = argv.shift();
+        break;
+      case '-r':
+      case '--redirects':
+        options.redirects = parseInt(argv.shift(), 10);
+        break;
+      case '-s':
+      case '--secret':
+        options.secret = argv.shift();
+        break;
+
+      default:
+        remains.push(arg);
+        break;
+    }
+  }
+  var createServer = require('../');
+  var server = createServer(options.secret, options.redirects);
+  server.listen(options.bind);
+}
+
+function helpMessage() {
+  console.log();
+  var lines = [
+    '  Usage: proximg [options]',
+    '',
+    '  Options:',
+    '',
+    '    -b, --bind <port>      The port or unix path to listen',
+    '    -r, --redirects <num>  Max redirects allowed, default is 4',
+    '    -s, --secret <token>   A secret token to encrypto urls',
+    '    -V, --version          Display the version',
+    '    -h, --help             Display this help menu',
+    ''
+  ];
+  console.log(lines.join('\n'));
+  process.exit();
+}
+
+function versionMessage() {
+  var pkg = require('../package.json');
+  console.log(pkg.version);
+  process.exit();
+}
