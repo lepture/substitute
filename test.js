@@ -2,7 +2,7 @@ var http = require('http');
 var crypto = require('crypto');
 var createServer = require('./');
 
-var secret = 'secret';
+var secretKey = 'secret';
 
 describe('proxy image', function() {
   it('should proxy valid image url', function(done) {
@@ -12,11 +12,11 @@ describe('proxy image', function() {
 
 
 function request(uri, cb) {
-  var server = createServer(secret);
+  var server = createServer(secretKey);
   server.listen(9067, function() {
-    var md5 = crypto.createHash('md5');
-    md5.update(secret + uri);
-    var digest = md5.digest('hex');
+    var hmac = crypto.createHmac('md5', secretKey);
+    hmac.update(uri);
+    var digest = hmac.digest('hex');
     var newUri = 'http://localhost:9067/' + digest + '/';
     newUri += encodeURIComponent(uri);
     http.get(newUri, function(resp) {

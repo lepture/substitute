@@ -59,7 +59,7 @@ function main(argv) {
 function helpMessage() {
   console.log();
   var lines = [
-    '  Usage: proximg [options]',
+    '  Usage: substitute [options]',
     '',
     '  Options:',
     '',

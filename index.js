@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var format = require('util').format;
 
 var version = require('./package').version;
-var viaHeader = 'Proxy Image ' + version;
+var viaHeader = 'Substitute ' + version;
 
 var currentConnections = 0;
 var totalConnections = 0;
@@ -48,9 +48,9 @@ function createServer(secretKey, maxRedirects) {
     var digest = ref[0], encodedUri = ref[1];
     if (digest && encodedUri) {
       var decodedUri = decodeURIComponent(encodedUri);
-      var md5 = crypto.createHash('md5');
-      md5.update(secretKey + decodedUri);
-      if (md5.digest('hex') !== digest) {
+      var hmac = crypto.createHmac('md5', secretKey);
+      hmac.update(decodedUri);
+      if (hmac.digest('hex') !== digest) {
         return abort404('Digest does not match');
       }
       return proxy(decodedUri, headers, resp, maxRedirects || 4);

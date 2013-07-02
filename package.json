@@ -1,10 +1,10 @@
 {
-  "name": "proximg",
+  "name": "substitute",
   "version": "0.1.0",
   "author": "Hsiaoming Yang <me@lepture.com>",
   "dependencies": {
   },
   "bin": {
-    "proximg": "bin/proximg"
+    "substitute": "bin/substitute"
   }
 }
