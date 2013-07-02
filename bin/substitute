@@ -5,6 +5,7 @@ main(process.argv.slice(2));
 function main(argv) {
   var options = {
     bind: 8000,
+    quiet: false,
     secret: '0x24FEEDFACEDEADBEEFCAFE',
     redirects: 4
   };
@@ -44,6 +45,10 @@ function main(argv) {
       case '--secret':
         options.secret = argv.shift();
         break;
+      case '-q':
+      case '--quiet':
+        options.quiet = true;
+        break;
 
       default:
         remains.push(arg);
@@ -53,6 +58,11 @@ function main(argv) {
   var createServer = require('../');
   var server = createServer(options.secret, options.redirects);
   console.log('Start serving at http://localhost:' + options.bind);
+  if (!options.quiet) {
+    server.on('request', function(req, res) {
+      console.log(req.method + ' - ' + req.url);
+    });
+  }
   server.listen(options.bind);
 }
 
@@ -66,6 +76,7 @@ function helpMessage() {
     '    -b, --bind <port>      The port or unix path to listen',
     '    -r, --redirects <num>  Max redirects allowed, default is 4',
     '    -s, --secret <token>   A secret token to encrypto urls',
+    '    -q, --quiet            Do not show request logs',
     '    -V, --version          Display the version',
     '    -h, --help             Display this help menu',
     ''
