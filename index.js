@@ -10,11 +10,14 @@ var currentConnections = 0;
 var totalConnections = 0;
 var startedTime = new Date();
 
-var EXCLUDED_HOSTS = '*.example.com';
+var EXCLUDED_HOSTS = process.env.SUBSTITUTE_EXCLUDED_HOSTS || '*.example.com';
 const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(2[0-9])|(3[0-1]))))/;
 
 
-function createServer(secretKey, maxRedirects) {
+function createServer(secretKey, maxRedirects, excludedHosts) {
+  if (excludedHosts) {
+    EXCLUDED_HOSTS = excludedHosts;
+  }
   var server = http.createServer(function(req, resp) {
     if (req.method != 'GET' || req.url === '/') {
       resp.writeHead(200);
@@ -60,6 +63,7 @@ function createServer(secretKey, maxRedirects) {
   });
   return server;
 }
+createServer.version = version;
 module.exports = createServer;
 
 function proxy(uri, headers, resp, redirects) {

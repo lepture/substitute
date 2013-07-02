@@ -2,7 +2,22 @@
   "name": "substitute",
   "version": "0.1.0",
   "author": "Hsiaoming Yang <me@lepture.com>",
-  "dependencies": {
+  "homepage": "https://github.com/lepture/substitute",
+  "keywords": [
+    "proxy",
+    "image",
+    "server"
+  ],
+  "respository": {
+    "type": "git",
+    "url": "https://github.com/lepture/substitute.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lepture/substitute/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*"
   },
   "bin": {
     "substitute": "bin/substitute"
