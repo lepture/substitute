@@ -67,6 +67,9 @@ function proxy(uri, headers, resp, redirects) {
   if (!uri.pathname) {
     uri = url.parse(uri);
   }
+  if (uri.protocol !== 'http:') {
+    return abort404(resp, 'Invalid protocal', uri.protocol);
+  }
   if (isExcluded(uri.host)) {
     return abort404(resp, 'Excluded Host');
   }
