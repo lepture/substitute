@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "Hsiaoming Yang <me@lepture.com>",
   "homepage": "https://github.com/lepture/substitute",
+  "description": "A proxy image server",
   "keywords": [
     "proxy",
     "image",

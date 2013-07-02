@@ -54,7 +54,7 @@ Test it manally, start a server:
 $ substitute
 ```
 
-And then visit: `http://localhost:8000/d42a08bfa19e5b526b0d2d53eb3b106c/http%3A%2F%2Fmedia.ebaumsworld.com%2Fpicture%2FMincemeat%2FPimp.jpg`
+And then visit: [this link](http://localhost:8000/d42a08bfa19e5b526b0d2d53eb3b106c/http%3A%2F%2Fmedia.ebaumsworld.com%2Fpicture%2FMincemeat%2FPimp.jpg).
 
 Test it automatically with mocha:
 
