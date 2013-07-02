@@ -31,13 +31,13 @@ $ substitute -h
 
 ## URL Formats
 
-Unlink camo, substitute only support one URL Format:
+Unlike camo, substitute supports only one URL Format:
 
 ```
 http://example.org/<digest>/<image-url>
 ```
 
-The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash.
+The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-url>` should be an ecoded/escaped uri.
 
 In the browser, you can generate the digest with component [enyo/md5](https://github.com/enyo/md5).
 
