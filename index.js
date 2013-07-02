@@ -51,11 +51,11 @@ function createServer(secretKey, maxRedirects) {
       var hmac = crypto.createHmac('md5', secretKey);
       hmac.update(decodedUri);
       if (hmac.digest('hex') !== digest) {
-        return abort404('Digest does not match');
+        return abort404(resp, 'Digest does not match');
       }
       return proxy(decodedUri, headers, resp, maxRedirects || 4);
     } else {
-      return abort404('Missing pathname');
+      return abort404(resp, 'Missing pathname');
     }
   });
   return server;
