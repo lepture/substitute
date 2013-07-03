@@ -19,6 +19,10 @@ function createServer(secretKey, maxRedirects, excludedHosts) {
     EXCLUDED_HOSTS = excludedHosts;
   }
   var server = http.createServer(function(req, resp) {
+    if (req.headers['via'] && req.headers['via'] == viaHeader) {
+      return abort404(resp, 'Requesting from self');
+    }
+
     if (req.method != 'GET' || req.url === '/') {
       resp.writeHead(200);
       return resp.end('humor');
@@ -32,10 +36,6 @@ function createServer(secretKey, maxRedirects, excludedHosts) {
 
     totalConnections += 1;
     currentConnections += 1;
-
-    if (req.headers['via'] && req.headers['via'] == viaHeader) {
-      return abort404(resp, 'Requesting from self');
-    }
 
     var headers = {
       'via': viaHeader,
