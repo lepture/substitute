@@ -39,8 +39,8 @@ function createServer(secretKey, maxRedirects, excludedHosts) {
 
     var headers = {
       'via': viaHeader,
-      'user-agent': req.headers['user-agent'],
-      'accept': req.headers.accept || 'image/*',
+      'user-agent': req.headers['user-agent'] || viaHeader
+      // 'accept': req.headers.accept || 'image/*'
     };
     if (req.headers['accept-encoding']) {
       headers['accept-encoding'] = req.headers['accept-encoding'];
