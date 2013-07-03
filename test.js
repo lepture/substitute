@@ -1,3 +1,4 @@
+var url = require('url');
 var http = require('http');
 var crypto = require('crypto');
 var createServer = require('./');
@@ -24,6 +25,10 @@ describe('proxy image', function() {
   it('should not proxy self', function(done) {
     equalStatus('http://localhost:9067/', 404, done);
   });
+
+  it('should follow redirects', function(done) {
+    equalStatus('http://git.io/top', 404, done);
+  });
 });
 
 
@@ -33,7 +38,8 @@ function request(uri, cb) {
     if (/https?\:\/\//.test(uri)) {
       uri = hmacUri(uri);
     }
-    var newUri = 'http://localhost:9067/' + uri;
+    var newUri = url.parse('http://localhost:9067/' + uri);
+    newUri.agent = false;
     http.get(newUri, function(resp) {
       cb(resp);
       server.close();
