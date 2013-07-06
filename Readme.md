@@ -22,6 +22,7 @@ $ substitute -h
   Options:
 
     -b, --bind <port>      The port or unix path to listen
+    -c, --config <file>    Specify a configuration file
     -r, --redirects <num>  Max redirects allowed, default is 4
     -s, --secret <token>   A secret token to encrypto urls
     -V, --version          Display the version
@@ -64,17 +65,15 @@ $ mocha
 
 ## API
 
-This library has only one API:
 
 ```js
 var substitute = require('substitute');
 console.log(substitute.version);
-var server = substitute(secret, maxRedirects);
+
+substitute.defaults({
+    maxRedirects: 5
+});
+
+var server = substitute(secret, options);
 server.listen(8000)
 ```
-
-`substitute` accepts three parameters:
-
-- secret: a secret token for digest
-- maxRedirects: max redirects number for 30x redirecting
-- excludedHosts: hosts to be excluded

@@ -81,9 +81,7 @@ function main(argv) {
   });
 
   var createServer = require('../');
-  createServer.defaults(options);
-
-  var server = createServer(options.secret, options.redirects);
+  var server = createServer(options.secret, options);
   console.log('Start serving at http://localhost:' + options.bind);
   if (!options.quiet) {
     server.on('request', function(req, res) {

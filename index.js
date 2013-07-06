@@ -31,7 +31,9 @@ function defaults(options) {
 }
 
 
-function createServer(secretKey) {
+function createServer(secretKey, options) {
+  defaults(options);
+
   var server = http.createServer(function(req, resp) {
     if (req.headers['via'] && req.headers['via'] == viaHeader) {
       return abort404(resp, 'Requesting from self');
