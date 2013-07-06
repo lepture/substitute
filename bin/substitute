@@ -3,12 +3,14 @@
 main(process.argv.slice(2));
 
 function main(argv) {
-  var options = {
+  var _defaults = {
     bind: 8000,
     quiet: false,
     secret: '0x24FEEDFACEDEADBEEFCAFE',
     redirects: 4
   };
+
+  var options = {};
 
   var getArg = function() {
     var args = argv.shift();
@@ -37,6 +39,10 @@ function main(argv) {
       case '--bind':
         options.bind = argv.shift();
         break;
+      case '-c':
+      case '--config':
+        options.config = argv.shift();
+        break;
       case '-r':
       case '--redirects':
         options.redirects = parseInt(argv.shift(), 10);
@@ -55,7 +61,28 @@ function main(argv) {
         break;
     }
   }
+
+  if (options.config) {
+    var path = require('path');
+    var config = require(path.resolve(options.config));
+    config.bind = config.bind || config.port;
+
+    Object.keys(config).forEach(function(key) {
+      if (!options[key]) {
+        options[key] = config[key];
+      }
+    });
+  }
+
+  Object.keys(_defaults).forEach(function(key) {
+    if (!options[key]) {
+      options[key] = _defaults[key];
+    }
+  });
+
   var createServer = require('../');
+  createServer.defaults(options);
+
   var server = createServer(options.secret, options.redirects);
   console.log('Start serving at http://localhost:' + options.bind);
   if (!options.quiet) {
@@ -74,6 +101,7 @@ function helpMessage() {
     '  Options:',
     '',
     '    -b, --bind <port>      The port or unix path to listen',
+    '    -c, --config <file>    Specify a configuration file',
     '    -r, --redirects <num>  Max redirects allowed, default is 4',
     '    -s, --secret <token>   A secret token to encrypto urls',
     '    -q, --quiet            Do not show request logs',

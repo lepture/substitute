@@ -10,14 +10,28 @@ var currentConnections = 0;
 var totalConnections = 0;
 var startedTime = new Date();
 
-var EXCLUDED_HOSTS = process.env.SUBSTITUTE_EXCLUDED_HOSTS || '*.example.com';
 const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(2[0-9])|(3[0-1]))))/;
 
 
-function createServer(secretKey, maxRedirects, excludedHosts) {
-  if (excludedHosts) {
-    EXCLUDED_HOSTS = excludedHosts;
+var _options = {
+  maxRedirects: 4,
+  excludedHosts: /.*\.example\.com/
+};
+
+
+function defaults(options) {
+  options = options || {};
+  if (options.maxRedirects) {
+    _options.maxRedirects = options.maxRedirects;
   }
+  if (options.excludedHosts) {
+    _options.excludedHosts = options.excludedHosts;
+  }
+  return _options;
+}
+
+
+function createServer(secretKey) {
   var server = http.createServer(function(req, resp) {
     if (req.headers['via'] && req.headers['via'] == viaHeader) {
       return abort404(resp, 'Requesting from self');
@@ -56,7 +70,7 @@ function createServer(secretKey, maxRedirects, excludedHosts) {
       if (hmac.digest('hex') !== digest) {
         return abort404(resp, 'Digest does not match');
       }
-      return proxy(decodedUri, headers, resp, maxRedirects || 4);
+      return proxy(decodedUri, headers, resp, _options.maxRedirects || 4);
     } else {
       return abort404(resp, 'Missing pathname');
     }
@@ -64,6 +78,7 @@ function createServer(secretKey, maxRedirects, excludedHosts) {
   return server;
 }
 createServer.version = version;
+createServer.defaults = defaults;
 module.exports = createServer;
 
 function proxy(uri, headers, resp, redirects) {
@@ -167,10 +182,7 @@ function finish(resp, msg) {
 
 function isExcluded(host) {
   if (host && !host.match(RESTRICTED_IPS)) {
-    if (!EXCLUDED_HOSTS.test) {
-      EXCLUDED_HOSTS = new RegExp(EXCLUDED_HOSTS.replace(".", "\\.").replace("*", "\\.*"));
-    }
-    return host.match(EXCLUDED_HOSTS);
+    return host.match(_options.excludedHosts);
   } else {
     return true;
   }
