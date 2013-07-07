@@ -14,7 +14,10 @@ const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(
 
 
 var _options = {
+  // only allow 4-loop redirects
   maxRedirects: 4,
+  // only allow images < 5M
+  contentLength: 5242880,
   excludedHosts: /.*\.example\.com/
 };
 
@@ -100,9 +103,8 @@ function proxy(uri, headers, resp, redirects) {
   uri.agent = false;
 
   http.get(uri, function(imgResp) {
-    // only allow images < 5M
     var contentLength = imgResp.headers['content-length'];
-    if (contentLength > 5242880) {
+    if (contentLength > _options.contentLength) {
       return abort404(resp, 'Content-Length Exceeded');
     }
 
