@@ -30,11 +30,14 @@ function main(argv) {
       case '--help':
         helpMessage();
         break;
+      case '-v':
       case '-V':
       case '--version':
         versionMessage();
         break;
 
+      case '-p':
+      case '--port':
       case '-b':
       case '--bind':
         options.bind = argv.shift();
@@ -80,7 +83,7 @@ function main(argv) {
     }
   });
 
-  var createServer = require('../');
+  var createServer = require('..');
   var server = createServer(options.secret, options);
   console.log('Start serving at http://localhost:' + options.bind);
   if (!options.quiet) {
