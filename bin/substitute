@@ -85,7 +85,9 @@ function main(argv) {
   console.log('Start serving at http://localhost:' + options.bind);
   if (!options.quiet) {
     server.on('request', function(req, res) {
-      console.log(req.method + ' - ' + req.url);
+      res.on('finish', function() {
+        console.log(res.statusCode + ' - ' + req.method + ' - ' + req.url);
+      });
     });
   }
   server.listen(options.bind);
