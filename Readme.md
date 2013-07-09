@@ -46,6 +46,10 @@ In the browser, you can generate the digest with component [enyo/md5](https://gi
 md5.hmac(secretKey, uri)
 ```
 
+Check out an example for changing `<img>` src with md5:
+
+https://gist.github.com/lepture/5953897
+
 
 ## Testing
 
