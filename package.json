@@ -9,7 +9,7 @@
     "image",
     "server"
   ],
-  "respository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/lepture/substitute.git"
   },
@@ -19,7 +19,8 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "*",
-    "jscoverage": "*"
+    "jscoverage": "*",
+    "coveralls": "*"
   },
   "bin": {
     "substitute": "bin/substitute"
