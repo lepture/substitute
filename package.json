@@ -18,7 +18,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "jscoverage": "*"
   },
   "bin": {
     "substitute": "bin/substitute"
