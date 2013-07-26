@@ -5,6 +5,7 @@ main(process.argv.slice(2));
 function main(argv) {
   var _defaults = {
     bind: 8000,
+    host: 'localhost',
     quiet: false,
     secret: '0x24FEEDFACEDEADBEEFCAFE',
     redirects: 4
@@ -42,6 +43,8 @@ function main(argv) {
       case '--bind':
         options.bind = argv.shift();
         break;
+      case '--host':
+        options.host = argv.shift();
       case '-c':
       case '--config':
         options.config = argv.shift();
@@ -93,7 +96,11 @@ function main(argv) {
       });
     });
   }
-  server.listen(options.bind);
+  if (parseInt(options.bind)) {
+    server.listen(options.bind, options.host);
+  } else {
+    server.listen(options.bind);
+  }
 }
 
 function helpMessage() {
@@ -104,6 +111,7 @@ function helpMessage() {
     '  Options:',
     '',
     '    -b, --bind <port>      The port or unix path to listen',
+    '    --host <host>          The hostname to listen [localhost]',
     '    -c, --config <file>    Specify a configuration file',
     '    -r, --redirects <num>  Max redirects allowed, default is 4',
     '    -s, --secret <token>   A secret token to encrypto urls',
