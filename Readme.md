@@ -22,6 +22,7 @@ $ substitute -h
   Options:
 
     -b, --bind <port>      The port or unix path to listen
+    --host <host>          The hostname to listen [localhost]
     -c, --config <file>    Specify a configuration file
     -r, --redirects <num>  Max redirects allowed, default is 4
     -s, --secret <token>   A secret token to encrypto urls

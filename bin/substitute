@@ -88,7 +88,7 @@ function main(argv) {
 
   var createServer = require('..');
   var server = createServer(options.secret, options);
-  console.log('Start serving at http://localhost:' + options.bind);
+  console.log('Start serving at http://' + options.host + ':' + options.bind);
   if (!options.quiet) {
     server.on('request', function(req, res) {
       res.on('finish', function() {
