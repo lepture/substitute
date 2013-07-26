@@ -26,8 +26,43 @@ describe('proxy image', function() {
     equalStatus('http://localhost:9067/', 404, done);
   });
 
+  it('can query favicon', function(done) {
+    equalStatus('favicon.ico', 200, done);
+  });
+
   it('should follow redirects', function(done) {
     equalStatus('http://git.io/top', 404, done);
+  });
+
+  it('did not match digest', function(done) {
+    var server = createServer(secretKey);
+    server.listen(9067, function() {
+      var newUri = url.parse('http://localhost:9067/foo/bar');
+      newUri.agent = false;
+      http.get(newUri, function(resp) {
+        equal(resp.statusCode, 404);
+        server.close();
+        done();
+      });
+    });
+  });
+
+  it('can change defaults', function(done) {
+    createServer.defaults({
+      maxRedirects: 4,
+      excludedHosts: ['example.com']
+    });
+    equalStatus('http://example.com/foo', 404, done);
+  });
+
+  it('has a large content length', function(done) {
+    var server = http.createServer(function(req, res) {
+      res.writeHead(200, {'content-length': 99999999});
+      res.end('ok');
+    });
+    server.listen(9068, function() {
+      equalStatus('http://localhost:9068/foo', 404, done);
+    });
   });
 });
 
