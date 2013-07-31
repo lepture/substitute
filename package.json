@@ -20,11 +20,15 @@
   "devDependencies": {
     "mocha": "*",
     "mocha-lcov-reporter": "*",
-    "jscoverage": "*",
+    "blanket": "*",
     "coveralls": "*"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "blanket": {
+      "pattern": "index.js",
+      "data-cover-never": "node_modules"
+    }
   },
   "bin": {
     "substitute": "bin/substitute"
