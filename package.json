@@ -23,6 +23,9 @@
     "jscoverage": "*",
     "coveralls": "*"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "bin": {
     "substitute": "bin/substitute"
   }

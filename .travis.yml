@@ -5,4 +5,5 @@ node_js:
 test:
   - make test
 
-after_success: make coveralls
+after_success:
+  - make coveralls
