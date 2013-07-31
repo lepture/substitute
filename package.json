@@ -19,6 +19,7 @@
   "dependencies": {},
   "devDependencies": {
     "mocha": "*",
+    "mocha-lcov-reporter": "*",
     "jscoverage": "*",
     "coveralls": "*"
   },

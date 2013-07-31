@@ -3,6 +3,10 @@
 A proxy image server. This is a rewrite version of [camo](https://github.com/atmos/camo).
 
 
+[![Build Status](https://travis-ci.org/lepture/substitute.png?branch=master)](https://travis-ci.org/lepture/substitute)
+[![Coverage Status](https://coveralls.io/repos/lepture/substitute/badge.png?branch=master)](https://coveralls.io/r/lepture/substitute)
+
+
 ## Installation
 
 Install with npm:
