@@ -27,7 +27,10 @@
     "test": "make test",
     "blanket": {
       "pattern": "index.js",
-      "data-cover-never": "node_modules"
+      "data-cover-never": "node_modules",
+      "data-cover-reporter-options": {
+        "shortnames": true
+      }
     }
   },
   "bin": {
