@@ -163,6 +163,9 @@ function proxy(uri, headers, resp, redirects) {
       default:
         return abort404(resp, 'Respond with: ' + imgResp.statusCode);
     }
+  }).on('error', function(e) {
+    // process.stderr.write(e.stack);
+    return abort404(resp, e.message);
   });
 }
 

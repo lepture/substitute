@@ -64,6 +64,10 @@ describe('proxy image', function() {
       equalStatus('http://localhost:9068/foo', 404, done);
     });
   });
+
+  it('can handle errors', function(done) {
+    equalStatus('http://abc', 404, done);
+  });
 });
 
 
