@@ -68,6 +68,36 @@ describe('proxy image', function() {
   it('can handle errors', function(done) {
     equalStatus('http://abc', 404, done);
   });
+
+  it('will exceeded max redirects', function(done) {
+    var server = http.createServer(function(req, res) {
+      res.writeHead(302, {'Location': 'http://localhost:9088/'});
+      res.end('ok');
+    });
+    server.listen(9088, function() {
+      equalStatus('http://localhost:9088/', 404, done);
+    });
+  });
+
+  it('can handle invalid redirect', function(done) {
+    var server = http.createServer(function(req, res) {
+      res.writeHead(302, {'Location': 'abc'});
+      res.end('ok');
+    });
+    server.listen(9038, function() {
+      equalStatus('http://localhost:9038/', 404, done);
+    });
+  });
+
+  it('can handle 304', function(done) {
+    var server = http.createServer(function(req, res) {
+      res.writeHead(304);
+      res.end('ok');
+    });
+    server.listen(90304, function() {
+      equalStatus('http://localhost:90304/', 304, done);
+    });
+  });
 });
 
 
