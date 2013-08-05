@@ -8,4 +8,13 @@ test:
 coveralls:
 	@$(test_node) --require blanket -R mocha-lcov-reporter | node_modules/.bin/coveralls
 
-.PHONY: test coverage coveralls
+components: component.json
+	@component install --dev
+
+build: components client.js
+	@component build --dev
+
+test-client:
+	@mocha-browser tests/index.html
+
+.PHONY: test coverage coveralls components build test-client
