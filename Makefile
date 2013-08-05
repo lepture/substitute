@@ -17,4 +17,13 @@ build: components client.js
 test-client:
 	@mocha-browser tests/index.html
 
+coverage-client:
+	@jscoverage client.js client-cov.js
+	@mv client.js client-bak.js
+	@mv client-cov.js client.js
+	@$(MAKE) build
+	@mv client-bak.js client.js
+	@mocha-browser tests/index.html -R html-cov > coverage.html
+
+
 .PHONY: test coverage coveralls components build test-client
