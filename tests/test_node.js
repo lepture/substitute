@@ -1,7 +1,7 @@
 var url = require('url');
 var http = require('http');
 var crypto = require('crypto');
-var createServer = require('./');
+var createServer = require('../');
 
 var secretKey = 'secret';
 
