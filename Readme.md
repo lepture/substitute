@@ -45,16 +45,24 @@ http://example.org/<digest>/<image-url>
 
 The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-url>` should be an ecoded/escaped uri.
 
-In the browser, you can generate the digest with component [enyo/md5](https://github.com/enyo/md5).
+## Browser Support
 
+You can get the browser client:
+
+    $ component install lepture/substitute
+
+And generate new src with:
+
+```js
+var substitute = require('substitute');
+substitute.server = 'https://example.com';
+substitute.secret = 'a secret that match the server secret';
+
+var newSrc = substitute('http://path/to/image');
+
+// replace all image src
+var newHtml = substitute.image(html);
 ```
-md5.hmac(secretKey, uri)
-```
-
-Check out an example for changing `<img>` src with md5:
-
-https://gist.github.com/lepture/5953897
-
 
 ## Testing
 
