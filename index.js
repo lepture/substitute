@@ -22,6 +22,9 @@ var _options = {
 };
 
 
+/**
+ * Change default options.
+ */
 function defaults(options) {
   options = options || {};
   if (options.maxRedirects) {
@@ -34,6 +37,9 @@ function defaults(options) {
 }
 
 
+/**
+ * Create the substitute server.
+ */
 function createServer(secretKey, options) {
   defaults(options);
 
@@ -86,6 +92,10 @@ createServer.version = version;
 createServer.defaults = defaults;
 module.exports = createServer;
 
+
+/**
+ * Proxy request for the images.
+ */
 function proxy(uri, headers, resp, redirects) {
   // make sure the uri is a parsed object
   if (!uri.pathname) {
@@ -170,6 +180,9 @@ function proxy(uri, headers, resp, redirects) {
 }
 
 
+/**
+ * Response with 404.
+ */
 function abort404(resp, msg) {
   msg = msg || 'Not Found';
   resp.writeHead(404);
@@ -177,6 +190,9 @@ function abort404(resp, msg) {
 }
 
 
+/**
+ * Response end message.
+ */
 function finish(resp, msg) {
   if (currentConnections < 1) {
     currentConnections = 0;
@@ -187,6 +203,9 @@ function finish(resp, msg) {
 }
 
 
+/**
+ * Detect if the host is excluded.
+ */
 function isExcluded(host) {
   if (host && !host.match(RESTRICTED_IPS)) {
     return host.match(_options.excludedHosts);
