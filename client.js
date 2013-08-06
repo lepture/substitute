@@ -25,9 +25,12 @@ substitute.secret = '';
 /**
  * Replace image src.
  */
-substitute.image = function(html) {
-  html = html.replace(/<img[^>]*src=('|")(.*?)\1[^>]*>/g, function(img) {
+substitute.image = function(html, filter) {
+  html = html.replace(/<img[^>]*src=('|")(https?:\/\/.*?)\1[^>]*>/g, function(img) {
     var src = RegExp.$2;
+    if (filter && !filter(src)) {
+      return img;
+    }
     return img.replace(src, substitute(src));
   });
   return html;
