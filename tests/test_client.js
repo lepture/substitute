@@ -14,20 +14,20 @@ describe('substitute', function() {
 
   it('can generate url', function() {
     equal(
-      '4d33f7cd9856290bb0e00ba00fe98245/http%3A%2F%2Ffoo.com',
+      '4d33f7cd9856290bb0e00ba00fe98245/moc.oof%2F%2F%3Aptth',
       substitute('http://foo.com')
     );
 
     substitute.server = 'https://example.com/';
     equal(
       substitute('http://foo.com'),
-      'https://example.com/4d33f7cd9856290bb0e00ba00fe98245/http%3A%2F%2Ffoo.com'
+      'https://example.com/4d33f7cd9856290bb0e00ba00fe98245/moc.oof%2F%2F%3Aptth'
     );
 
     substitute.secret = 'bar';
     equal(
       substitute('http://foo.com'),
-      'https://example.com/77e558c14d08464e074d01a9eda6a72d/http%3A%2F%2Ffoo.com'
+      'https://example.com/77e558c14d08464e074d01a9eda6a72d/moc.oof%2F%2F%3Aptth'
     );
   });
 
@@ -35,7 +35,7 @@ describe('substitute', function() {
     substitute.server = 'https://example.com/';
     substitute.secret = 'bar';
     var ret = substitute.image('<div><img src="http://foo.com"><b>bold</b></div>');
-    equal(ret, '<div><img src="https://example.com/77e558c14d08464e074d01a9eda6a72d/http%3A%2F%2Ffoo.com"><b>bold</b></div>');
+    equal(ret, '<div><img src="https://example.com/77e558c14d08464e074d01a9eda6a72d/moc.oof%2F%2F%3Aptth"><b>bold</b></div>');
   });
 
   it('will not replace image', function() {

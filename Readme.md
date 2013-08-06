@@ -43,7 +43,7 @@ Unlike camo, substitute supports only one URL Format:
 http://example.org/<digest>/<image-url>
 ```
 
-The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-url>` should be an ecoded/escaped uri.
+The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-url>` should be an ecoded/escaped reversed uri.
 
 ## Browser Support
 
@@ -72,12 +72,12 @@ Test it manally, start a server:
 $ substitute
 ```
 
-And then visit: [this link](http://localhost:8000/d42a08bfa19e5b526b0d2d53eb3b106c/http%3A%2F%2Fmedia.ebaumsworld.com%2Fpicture%2FMincemeat%2FPimp.jpg).
+And then visit: [this link](http://localhost:8000/48f589a429000f26b790eb3e33f6a685/gpj.pmiP%2FtaemecniM%2Ferutcip%2Fmoc.dlrowsmuabe.aidem%2F%2F%3Aptth).
 
 Test it automatically with mocha:
 
 ```
-$ mocha
+$ mocha tests/test_node.js
 ```
 
 ## API

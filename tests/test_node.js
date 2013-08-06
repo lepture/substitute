@@ -66,7 +66,7 @@ describe('proxy image', function() {
   });
 
   it('can handle errors', function(done) {
-    equalStatus('http://abc', 404, done);
+    equalStatus('http://', 404, done);
   });
 
   it('will exceeded max redirects', function(done) {
@@ -120,6 +120,7 @@ function hmacUri(uri) {
     var hmac = crypto.createHmac('md5', secretKey);
     hmac.update(uri);
     var digest = hmac.digest('hex');
+    uri = uri.split('').reverse().join('');
     return digest + '/' + encodeURIComponent(uri);
 }
 

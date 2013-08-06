@@ -76,6 +76,7 @@ function createServer(secretKey, options) {
     var digest = ref[0], encodedUri = ref[1];
     if (digest && encodedUri) {
       var decodedUri = decodeURIComponent(encodedUri);
+      decodedUri = decodedUri.split('').reverse().join('');
       var hmac = crypto.createHmac('md5', secretKey);
       hmac.update(decodedUri);
       if (hmac.digest('hex') !== digest) {

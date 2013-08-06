@@ -6,6 +6,7 @@ var md5 = require('md5');
  */
 function substitute(src) {
     var digest = md5.hmac(substitute.secret, src);
+    src = src.split('').reverse().join('');
     return substitute.server + digest + '/' + encodeURIComponent(src);
 }
 
