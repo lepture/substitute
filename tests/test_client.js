@@ -38,4 +38,15 @@ describe('substitute', function() {
     equal(ret, '<div><img src="https://example.com/77e558c14d08464e074d01a9eda6a72d/http%3A%2F%2Ffoo.com"><b>bold</b></div>');
   });
 
+  it('will not replace image', function() {
+    var html = '<div><img src="http://foo.com"><b>bold</b></div>';
+    var ret = substitute.image(
+      html,
+      function(src) {
+        return false;
+      }
+    );
+    equal(ret, html);
+  });
+
 });
