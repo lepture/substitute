@@ -45,9 +45,14 @@ http://example.org/<digest>/<image-url>
 
 The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-url>` should be an ecoded/escaped reversed uri.
 
+```
+http://example.org/48f589a429000f26b790eb3e33f6a685/gpj.pmiP%2FtaemecniM%2Ferutcip%2Fmoc.dlrowsmuabe.aidem%2F%2F%3Aptth
+```
+
+
 ## Browser Support
 
-You can get the browser client:
+You can get the browser client with [component(1)](http://component.io):
 
     $ component install lepture/substitute
 
@@ -64,6 +69,7 @@ var newSrc = substitute('http://path/to/image');
 var newHtml = substitute.image(html);
 ```
 
+
 ## Testing
 
 Test it manally, start a server:
@@ -77,8 +83,15 @@ And then visit: [this link](http://localhost:8000/48f589a429000f26b790eb3e33f6a6
 Test it automatically with mocha:
 
 ```
-$ mocha tests/test_node.js
+$ make test
 ```
+
+You can also test the client part with:
+
+```
+$ make test-client
+```
+
 
 ## API
 

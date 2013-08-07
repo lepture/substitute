@@ -14,10 +14,10 @@ components: component.json
 build: components client.js
 	@component build --dev
 
-test-client:
+test-client: build
 	@mocha-browser tests/index.html
 
-coverage-client:
+coverage-client: components
 	@jscoverage client.js client-cov.js
 	@mv client.js client-bak.js
 	@mv client-cov.js client.js
