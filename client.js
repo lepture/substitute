@@ -6,8 +6,17 @@ var md5 = require('md5');
  */
 function substitute(src) {
     var digest = md5.hmac(substitute.secret, src);
+
+    var regex = /\.(jpg|jpeg|png|gif)$/i;
+
+    var ext = '';
+    var m = src.match(regex);
+    if (m) {
+      ext = m[0];
+    }
+
     src = src.split('').reverse().join('');
-    return substitute.server + digest + '/' + encodeURIComponent(src);
+    return substitute.server + digest + '/' + encodeURIComponent(src) + ext;
 }
 
 

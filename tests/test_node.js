@@ -120,8 +120,16 @@ function hmacUri(uri) {
     var hmac = crypto.createHmac('md5', secretKey);
     hmac.update(uri);
     var digest = hmac.digest('hex');
+
+    var regex = /\.(jpg|jpeg|png|gif)$/i;
+    var m = uri.match(regex);
+    var extname = '';
+    if (m) {
+      extname = m[0];
+    }
+
     uri = uri.split('').reverse().join('');
-    return digest + '/' + encodeURIComponent(uri);
+    return digest + '/' + encodeURIComponent(uri) + extname;
 }
 
 function equal(a, b) {

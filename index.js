@@ -85,6 +85,9 @@ function createServer(secretKey, options) {
     var ref = uri.pathname.replace(/^\//, '').split("/", 2);
     var digest = ref[0], encodedUri = ref[1];
     if (digest && encodedUri) {
+      var regex = /\.(jpg|jpeg|png|gif)$/i;
+      encodedUri = encodedUri.replace(regex, '');
+
       var decodedUri = decodeURIComponent(encodedUri);
       decodedUri = decodedUri.split('').reverse().join('');
       var hmac = crypto.createHmac('md5', secretKey);
