@@ -47,7 +47,7 @@ http://example.org/<digest>/<image-url>
 The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-url>` should be an ecoded/escaped reversed uri.
 
 ```
-http://example.org/48f589a429000f26b790eb3e33f6a685/gpj.pmiP%2FtaemecniM%2Ferutcip%2Fmoc.dlrowsmuabe.aidem%2F%2F%3Aptth
+http://example.org/d42a08bfa19e5b526b0d2d53eb3b106c/gpj.pmiP%2FtaemecniM%2Ferutcip%2Fmoc.dlrowsmuabe.aidem%2F%2F%3Aptth.jpg
 ```
 
 
@@ -79,7 +79,7 @@ Test it manally, start a server:
 $ substitute
 ```
 
-And then visit: [this link](http://localhost:8000/48f589a429000f26b790eb3e33f6a685/gpj.pmiP%2FtaemecniM%2Ferutcip%2Fmoc.dlrowsmuabe.aidem%2F%2F%3Aptth).
+And then visit: [this link](http://localhost:8000/d42a08bfa19e5b526b0d2d53eb3b106c/gpj.pmiP%2FtaemecniM%2Ferutcip%2Fmoc.dlrowsmuabe.aidem%2F%2F%3Aptth.jpg).
 
 Test it automatically with mocha:
 
