@@ -8,7 +8,8 @@ function main(argv) {
     host: 'localhost',
     quiet: false,
     secret: '0x24FEEDFACEDEADBEEFCAFE',
-    redirects: 4
+    basePath: null,
+    maxRedirects: 4
   };
 
   var options = {};
@@ -45,13 +46,16 @@ function main(argv) {
         break;
       case '--host':
         options.host = argv.shift();
+        break;
+      case '--path':
+        options.basePath = argv.shift();
       case '-c':
       case '--config':
         options.config = argv.shift();
         break;
       case '-r':
       case '--redirects':
-        options.redirects = parseInt(argv.shift(), 10);
+        options.maxRedirects = parseInt(argv.shift(), 10);
         break;
       case '-s':
       case '--secret':
@@ -69,6 +73,7 @@ function main(argv) {
   }
 
   if (options.config) {
+    // reading from config file
     var path = require('path');
     var config = require(path.resolve(options.config));
     config.bind = config.bind || config.port;
@@ -81,6 +86,7 @@ function main(argv) {
   }
 
   Object.keys(_defaults).forEach(function(key) {
+    // load default options
     if (!options[key]) {
       options[key] = _defaults[key];
     }
@@ -112,6 +118,7 @@ function helpMessage() {
     '',
     '    -b, --bind <port>      The port or unix path to listen',
     '    --host <host>          The hostname to listen [localhost]',
+    '    --path <path>          The pathname to listen [null]',
     '    -c, --config <file>    Specify a configuration file',
     '    -r, --redirects <num>  Max redirects allowed, default is 4',
     '    -s, --secret <token>   A secret token to encrypto urls',

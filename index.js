@@ -15,6 +15,7 @@ const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(
 
 var _options = {
   // only allow 4-loop redirects
+  basePath: null,
   maxRedirects: 4,
   // only allow images < 5M
   contentLength: 5242880,
@@ -27,12 +28,9 @@ var _options = {
  */
 function defaults(options) {
   options = options || {};
-  if (options.maxRedirects) {
-    _options.maxRedirects = options.maxRedirects;
-  }
-  if (options.excludedHosts) {
-    _options.excludedHosts = options.excludedHosts;
-  }
+  Object.keys(options).forEach(function(key) {
+    _options[key] = options[key];
+  });
   return _options;
 }
 
@@ -44,17 +42,29 @@ function createServer(secretKey, options) {
   defaults(options);
 
   var server = http.createServer(function(req, resp) {
+    var pathname = req.url;
+
+    if (_options.basePath) {
+      if (pathname.indexOf(_options.basePath) !== 0) {
+        return abort404(resp, 'Not found');
+      }
+      pathname = pathname.replace(_options.basePath, '');
+      if (pathname.charAt(0) !== '/') {
+        pathname = '/' + pathname;
+      }
+    }
+
     if (req.headers['via'] && req.headers['via'] == viaHeader) {
       return abort404(resp, 'Requesting from self');
     }
 
-    if (req.method != 'GET' || req.url === '/') {
+    if (req.method != 'GET' || pathname === '/') {
       resp.writeHead(200);
       return resp.end('humor');
-    } else if (req.url === '/favicon.ico') {
+    } else if (pathname === '/favicon.ico') {
       resp.writeHead(200);
       return resp.end('ok');
-    } else if (req.url === '/status') {
+    } else if (pathname === '/status') {
       resp.writeHead(200);
       return resp.end(format('ok %s/%s since %s', currentConnections, totalConnections, startedTime));
     }
@@ -71,7 +81,7 @@ function createServer(secretKey, options) {
       headers['accept-encoding'] = req.headers['accept-encoding'];
     }
     delete req.headers.cookie;
-    var uri = url.parse(req.url);
+    var uri = url.parse(pathname);
     var ref = uri.pathname.replace(/^\//, '').split("/", 2);
     var digest = ref[0], encodedUri = ref[1];
     if (digest && encodedUri) {
