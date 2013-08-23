@@ -14,32 +14,32 @@ describe('substitute', function() {
 
   it('can generate url', function() {
     equal(
-      '4d33f7cd9856290bb0e00ba00fe98245/moc.oof%2F%2F%3Aptth',
-      substitute('http://foo.com')
+      '0moc.oof/11f7137f6ab2e19167dec729cafa658a/bar%23baz.jpg',
+      substitute('http://foo.com/bar/baz.jpg')
     );
 
     substitute.server = 'https://example.com/';
     equal(
-      substitute('http://foo.com'),
-      'https://example.com/4d33f7cd9856290bb0e00ba00fe98245/moc.oof%2F%2F%3Aptth'
+      'https://example.com/0moc.oof/6b8591a52be19251fd22c8559d1c6d6e/bar',
+      substitute('http://foo.com/bar')
     );
 
     substitute.secret = 'bar';
     equal(
-      substitute('http://foo.com'),
-      'https://example.com/77e558c14d08464e074d01a9eda6a72d/moc.oof%2F%2F%3Aptth'
+      'https://example.com/0moc.oof/fa38cae1b3af34170554986c2a8ebf8e/bar',
+      substitute('http://foo.com/bar')
     );
   });
 
   it('can replace image', function() {
     substitute.server = 'https://example.com/';
     substitute.secret = 'bar';
-    var ret = substitute.image('<div><img src="http://foo.com"><b>bold</b></div>');
-    equal(ret, '<div><img src="https://example.com/77e558c14d08464e074d01a9eda6a72d/moc.oof%2F%2F%3Aptth"><b>bold</b></div>');
+    var ret = substitute.image('<div><img src="http://foo.com/bar"><b>bold</b></div>');
+    equal(ret, '<div><img src="https://example.com/0moc.oof/fa38cae1b3af34170554986c2a8ebf8e/bar"><b>bold</b></div>');
   });
 
   it('will not replace image', function() {
-    var html = '<div><img src="http://foo.com"><b>bold</b></div>';
+    var html = '<div><img src="http://foo.com/bar"><b>bold</b></div>';
     var ret = substitute.image(
       html,
       function(src) {

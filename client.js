@@ -5,18 +5,29 @@ var md5 = require('md5');
  * Generate substitute url.
  */
 function substitute(src) {
-    var digest = md5.hmac(substitute.secret, src);
+  // domain/digest/path
+  var digest = md5.hmac(substitute.secret, src);
 
-    var regex = /\.(jpg|jpeg|png|gif)$/i;
+  var regex = /(https?)\:\/\/([^\/]+)\/(.*)$/;
 
-    var ext = '';
-    var m = src.match(regex);
-    if (m) {
-      ext = m[0];
-    }
+  var m = src.match(regex);
+  if (!m) {
+    throw new Error(src + ' is not a url');
+  }
 
-    src = src.split('').reverse().join('');
-    return substitute.server + digest + '/' + encodeURIComponent(src) + ext;
+  var domain = '';
+  if (m[1] === 'http') {
+    domain += '0';
+  } else {
+    domain += '1';
+  }
+  domain += m[2].split('').reverse().join('');
+
+  var urlpath = m[3].replace(/#.*$/, '');
+  // urlpath can't contain #
+  urlpath = urlpath.replace(/\//g, '#');
+
+  return substitute.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
 }
 
 
