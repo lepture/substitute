@@ -1,6 +1,6 @@
 {
   "name": "substitute",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "author": "Hsiaoming Yang <me@lepture.com>",
   "homepage": "https://github.com/lepture/substitute",
   "description": "A proxy image server",
@@ -26,7 +26,10 @@
   "scripts": {
     "test": "make test",
     "blanket": {
-      "pattern": ["client.js", "index.js"],
+      "pattern": [
+        "client.js",
+        "index.js"
+      ],
       "data-cover-never": "node_modules",
       "data-cover-reporter-options": {
         "shortnames": true
