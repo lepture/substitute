@@ -22,7 +22,7 @@ describe('proxy image', function() {
   });
 
   it('should not proxy html', function(done) {
-    equalStatus('http://nodejs.org', 404, done);
+    equalStatus('https://github.com', 404, done);
   });
 
   it('should not proxy self', function(done) {
@@ -99,6 +99,14 @@ describe('proxy image', function() {
     });
     server.listen(90304, function() {
       equalStatus('http://localhost:90304/', 304, done);
+    });
+  });
+
+  it('can handle invalid protocal', function(done) {
+    var server = createServer(secretKey);
+    request('9moc.dlrowsmuabe.aidem/48f589a429000f26b790eb3e33f6a685/picture%23Mincemeat%23Pimp.jpg', function(resp) {
+      equal(resp.statusCode, 404);
+      done();
     });
   });
 });
