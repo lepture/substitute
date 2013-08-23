@@ -34,6 +34,33 @@ function defaults(options) {
   return _options;
 }
 
+function decodeSrc(src) {
+  var uri = '';
+
+  var m = src.split('/');
+  if (m.length !== 3) {
+    return null;
+  }
+
+  var domain = m[0];
+  var digest = m[1];
+  var urlpath = m[2];
+
+  var protocol = domain.charAt(0);
+
+  if (protocol == '0') {
+    uri += 'http://';
+  } else if (protocol == '1') {
+    uri += 'https://';
+  } else {
+    return null;
+  }
+
+  uri += domain.slice(1).split('').reverse().join('') + '/';
+  uri += decodeURIComponent(urlpath).replace(/#/g, '/');
+  return {uri: uri, digest: digest};
+}
+
 
 /**
  * Create the substitute server.
@@ -82,20 +109,16 @@ function createServer(secretKey, options) {
     }
     delete req.headers.cookie;
     var uri = url.parse(pathname);
-    var ref = uri.pathname.replace(/^\//, '').split("/", 2);
-    var digest = ref[0], encodedUri = ref[1];
-    if (digest && encodedUri) {
-      var regex = /\.(jpg|jpeg|png|gif)$/i;
-      encodedUri = encodedUri.replace(regex, '');
 
-      var decodedUri = decodeURIComponent(encodedUri);
-      decodedUri = decodedUri.split('').reverse().join('');
+    var ref = decodeSrc(uri.pathname.replace(/^\//, ''));
+
+    if (ref) {
       var hmac = crypto.createHmac('md5', secretKey);
-      hmac.update(decodedUri);
-      if (hmac.digest('hex') !== digest) {
+      hmac.update(ref.uri);
+      if (hmac.digest('hex') !== ref.digest) {
         return abort404(resp, 'Digest does not match');
       }
-      return proxy(decodedUri, headers, resp, _options.maxRedirects || 4);
+      return proxy(ref.uri, headers, resp, _options.maxRedirects || 4);
     } else {
       return abort404(resp, 'Missing pathname');
     }

@@ -1,5 +1,10 @@
 describe('substitute', function() {
-  var substitute = require('substitute');
+  if (process.env) {
+    // in node
+    var substitute = require('../client');
+  } else {
+    var substitute = require('substitute');
+  }
 
   function equal(a, b) {
     if (a !== b) {

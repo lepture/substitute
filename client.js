@@ -8,7 +8,7 @@ function substitute(src) {
   // domain/digest/path
   var digest = md5.hmac(substitute.secret, src);
 
-  var regex = /(https?)\:\/\/([^\/]+)\/(.*)$/;
+  var regex = /(https?)\:\/\/([^\/]+)\/?(.*)?$/;
 
   var m = src.match(regex);
   if (!m) {
@@ -23,9 +23,12 @@ function substitute(src) {
   }
   domain += m[2].split('').reverse().join('');
 
-  var urlpath = m[3].replace(/#.*$/, '');
-  // urlpath can't contain #
-  urlpath = urlpath.replace(/\//g, '#');
+  var urlpath = '';
+  if (m[3]) {
+    urlpath = m[3].replace(/#.*$/, '');
+    // urlpath can't contain #
+    urlpath = urlpath.replace(/\//g, '#');
+  }
 
   return substitute.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
 }

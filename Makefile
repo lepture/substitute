@@ -1,8 +1,12 @@
-test_node = node_modules/.bin/mocha tests/test_node.js
+test_node = node_modules/.bin/mocha tests/test_node.js tests/test_client.js
 
 coverage:
 	@$(test_node) --require blanket -R html-cov > coverage.html
+
 test:
+	@component install
+	@rm -fr node_modules/md5
+	@mv components/enyo-md5 node_modules/md5
 	@$(test_node)
 
 coveralls:
