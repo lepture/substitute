@@ -21,6 +21,7 @@
     "mocha": "*",
     "mocha-lcov-reporter": "*",
     "blanket": "*",
+    "component": "*",
     "coveralls": "*"
   },
   "scripts": {

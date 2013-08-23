@@ -4,7 +4,7 @@ coverage:
 	@$(test_node) --require blanket -R html-cov > coverage.html
 
 test:
-	@component install
+	@node_modules/.bin/component install
 	@rm -fr node_modules/md5
 	@mv components/enyo-md5 node_modules/md5
 	@$(test_node)
