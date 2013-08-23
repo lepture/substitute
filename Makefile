@@ -1,4 +1,4 @@
-test_node = node_modules/.bin/mocha tests/test_node.js tests/test_client.js
+test_node = node_modules/.bin/mocha tests/test_node.js tests/test_browser.js
 
 coverage:
 	@$(test_node) --require blanket -R html-cov > coverage.html
