@@ -145,6 +145,8 @@ function proxy(uri, headers, resp, redirects) {
     return abort404(resp, 'Excluded Host');
   }
 
+  headers['referer'] = uri.protocol + '//' + uri.host + '/';
+
   headers.host = uri.host;
   uri.headers = headers;
   uri.agent = false;

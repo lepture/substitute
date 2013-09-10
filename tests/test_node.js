@@ -21,6 +21,10 @@ describe('proxy image', function() {
     equalStatus('http://media.ebaumsworld.com/picture/Mincemeat/Pimp.jpg', 200, done);
   });
 
+  it('must request with referer', function(done) {
+    equalStatus('http://www.zhengtan.me/wp-content/uploads/2012/09/Wtc-2004-memorial.jpg', 200, done);
+  });
+
   it('should not proxy html', function(done) {
     equalStatus('https://github.com', 404, done);
   });
