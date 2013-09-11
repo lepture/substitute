@@ -1,6 +1,7 @@
 var http = require('http');
 var url = require('url');
 var crypto = require('crypto');
+var path = require('path');
 var format = require('util').format;
 
 var version = require('./package').version;
@@ -156,6 +157,9 @@ function proxy(uri, headers, resp, redirects) {
   headers.host = uri.host;
   uri.headers = headers;
   uri.agent = false;
+
+  // resolve clean path
+  uri.path = uri.pathname = path.resolve(uri.pathname).replace(/\\/g, '/');
 
   http.get(uri, function(imgResp) {
     var contentLength = imgResp.headers['content-length'];
