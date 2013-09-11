@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var createServer = require('../');
 var client = require('../client');
 
+var PORT = 9060;
 var secretKey = 'secret';
 client.secret = secretKey;
 
@@ -43,8 +44,8 @@ describe('proxy image', function() {
 
   it('did not match digest', function(done) {
     var server = createServer(secretKey);
-    server.listen(9067, function() {
-      var newUri = url.parse('http://localhost:9067/foo/bar');
+    server.listen(9091, function() {
+      var newUri = url.parse('http://localhost:9091/foo/bar');
       newUri.agent = false;
       http.get(newUri, function(resp) {
         equal(resp.statusCode, 404);
@@ -67,8 +68,8 @@ describe('proxy image', function() {
       res.writeHead(200, {'content-length': 99999999});
       res.end('ok');
     });
-    server.listen(9068, function() {
-      equalStatus('http://localhost:9068/foo', 404, done);
+    server.listen(9092, function() {
+      equalStatus('http://localhost:9092/foo', 404, done);
     });
   });
 
@@ -81,8 +82,8 @@ describe('proxy image', function() {
       res.writeHead(302, {'Location': 'http://localhost:9088/'});
       res.end('ok');
     });
-    server.listen(9088, function() {
-      equalStatus('http://localhost:9088/', 404, done);
+    server.listen(9093, function() {
+      equalStatus('http://localhost:9093/', 404, done);
     });
   });
 
@@ -91,8 +92,8 @@ describe('proxy image', function() {
       res.writeHead(302, {'Location': 'abc'});
       res.end('ok');
     });
-    server.listen(9038, function() {
-      equalStatus('http://localhost:9038/', 404, done);
+    server.listen(9094, function() {
+      equalStatus('http://localhost:9094/', 404, done);
     });
   });
 
@@ -116,13 +117,19 @@ describe('proxy image', function() {
 });
 
 
-function request(uri, cb) {
+function request(uri, port, cb) {
+  if (typeof port === 'function') {
+    cb = port;
+    port = PORT;
+    PORT = PORT + 1;
+  }
+
   var server = createServer(secretKey);
-  server.listen(9067, function() {
+  server.listen(port, function() {
     if (/https?\:\/\//.test(uri)) {
       uri = client(uri);
     }
-    var newUri = url.parse('http://localhost:9067/' + uri);
+    var newUri = url.parse('http://localhost:' + port + '/' + uri);
     newUri.agent = false;
     http.get(newUri, function(resp) {
       cb(resp);
