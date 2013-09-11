@@ -105,6 +105,10 @@ function main(argv) {
       console.log('100 - PROXY - ' + uri);
     });
   }
+  server.on('abort', function(msg) {
+    console.log('400 - ABORT - ' + msg);
+  });
+
   if (parseInt(options.bind)) {
     server.listen(options.bind, options.host);
   } else {

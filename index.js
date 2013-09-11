@@ -124,6 +124,8 @@ function createServer(secretKey, options) {
       return abort404(resp, 'Missing pathname');
     }
   });
+
+  abort404.server = server;
   return server;
 }
 createServer.version = version;
@@ -229,6 +231,10 @@ function proxy(uri, headers, resp, redirects) {
 function abort404(resp, msg) {
   msg = msg || 'Not Found';
   resp.writeHead(404);
+
+  if (abort404.server) {
+    abort404.server.emit('abort', msg);
+  }
   finish(resp, msg);
 }
 
