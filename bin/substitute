@@ -101,6 +101,9 @@ function main(argv) {
         console.log(res.statusCode + ' - ' + req.method + ' - ' + req.url);
       });
     });
+    server.on('proxy', function(uri) {
+      console.log('100 - PROXY - ' + uri);
+    });
   }
   if (parseInt(options.bind)) {
     server.listen(options.bind, options.host);

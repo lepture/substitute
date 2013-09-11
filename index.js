@@ -118,6 +118,7 @@ function createServer(secretKey, options) {
       if (hmac.digest('hex') !== ref.digest) {
         return abort404(resp, 'Digest does not match');
       }
+      server.emit('proxy', ref.uri);
       return proxy(ref.uri, headers, resp, _options.maxRedirects || 4);
     } else {
       return abort404(resp, 'Missing pathname');
