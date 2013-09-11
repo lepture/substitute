@@ -2,7 +2,7 @@
   "name": "substitute",
   "repo": "lepture/substitute",
   "description": "Client for substitute server.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "keywords": [
     "proxy",
     "image",
