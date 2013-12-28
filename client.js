@@ -43,7 +43,7 @@ substitute.server = '';
 /**
  * Define substitute secret.
  */
-substitute.secret = '';
+substitute.secret = '0x24FEEDFACEDEADBEEFCAFE';
 
 
 /**
