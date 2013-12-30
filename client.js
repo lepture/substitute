@@ -1,12 +1,17 @@
 var md5 = require('md5');
 
+function Substitute(options) {
+  options = options || {};
+  this.server = options.server || '';
+  this.secret = options.secret || '0x24FEEDFACEDEADBEEFCAFE';
+}
 
 /**
- * Generate substitute url.
+ * Generate substitute link
  */
-function substitute(src) {
+Substitute.prototype.link = function(src) {
   // domain/digest/path
-  var digest = md5.hmac(substitute.secret, src);
+  var digest = md5.hmac(this.secret, src);
 
   var regex = /(https?)\:\/\/([^\/]+)\/?(.*)?$/;
 
@@ -30,32 +35,20 @@ function substitute(src) {
     urlpath = urlpath.replace(/\//g, '#');
   }
 
-  return substitute.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
-}
-
-
-/**
- * Define substitute server.
- */
-substitute.server = '';
-
-
-/**
- * Define substitute secret.
- */
-substitute.secret = '0x24FEEDFACEDEADBEEFCAFE';
-
+  return this.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
+};
 
 /**
  * Replace image src.
  */
-substitute.image = function(html, filter) {
+Substitute.prototype.image = function(html, filter) {
+  var me = this;
   html = html.replace(/<img[^>]*src=('|")(https?:\/\/.*?)\1[^>]*>/g, function(img) {
     var src = RegExp.$2;
     if (filter && !filter(src)) {
       return img;
     }
-    return img.replace(src, substitute(src));
+    return img.replace(src, me.link(src));
   });
   return html;
 };
@@ -64,4 +57,5 @@ substitute.image = function(html, filter) {
 /**
  * Exports substitute API.
  */
-module.exports = substitute;
+exports = module.exports = new Substitute();
+exports.Substitute = Substitute;
