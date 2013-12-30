@@ -64,7 +64,7 @@ var substitute = require('substitute');
 substitute.server = 'https://example.com';
 substitute.secret = 'a secret that match the server secret';
 
-var newSrc = substitute('http://path/to/image');
+var newSrc = substitute.link('http://path/to/image');
 
 // replace all image src
 var newHtml = substitute.image(html);

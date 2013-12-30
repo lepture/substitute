@@ -19,7 +19,7 @@ describe('proxy image', function() {
   });
 
   it('should proxy valid image url', function(done) {
-    equalStatus('http://media.ebaumsworld.com/picture/Mincemeat/Pimp.jpg', 200, done);
+    equalStatus('http://img3.douban.com/view/photo/photo/public/p1487563850.jpg', 200, done);
   });
 
   it.skip('must request with referer', function(done) {
@@ -127,7 +127,7 @@ function request(uri, port, cb) {
   var server = createServer(secretKey);
   server.listen(port, function() {
     if (/https?\:\/\//.test(uri)) {
-      uri = client(uri);
+      uri = client.link(uri);
     }
     var newUri = url.parse('http://localhost:' + port + '/' + uri);
     newUri.agent = false;

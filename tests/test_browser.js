@@ -1,9 +1,10 @@
 describe('substitute', function() {
-  if (process.env) {
+  var substitute;
+  if (process && process.env) {
     // in node
-    var substitute = require('../client');
+    substitute = require('../client');
   } else {
-    var substitute = require('substitute');
+    substitute = require('substitute');
   }
 
   function equal(a, b) {
@@ -20,19 +21,19 @@ describe('substitute', function() {
   it('can generate url', function() {
     equal(
       '0moc.oof/11f7137f6ab2e19167dec729cafa658a/bar%23baz.jpg',
-      substitute('http://foo.com/bar/baz.jpg')
+      substitute.link('http://foo.com/bar/baz.jpg')
     );
 
     substitute.server = 'https://example.com/';
     equal(
       'https://example.com/0moc.oof/6b8591a52be19251fd22c8559d1c6d6e/bar',
-      substitute('http://foo.com/bar')
+      substitute.link('http://foo.com/bar')
     );
 
     substitute.secret = 'bar';
     equal(
       'https://example.com/0moc.oof/fa38cae1b3af34170554986c2a8ebf8e/bar',
-      substitute('http://foo.com/bar')
+      substitute.link('http://foo.com/bar')
     );
   });
 
