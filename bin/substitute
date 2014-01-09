@@ -9,6 +9,7 @@ function main(argv) {
     quiet: false,
     secret: '0x24FEEDFACEDEADBEEFCAFE',
     basePath: null,
+    pathsep: '#',
     maxRedirects: 4
   };
 
@@ -49,6 +50,10 @@ function main(argv) {
         break;
       case '--path':
         options.basePath = argv.shift();
+        break;
+      case '--pathsep':
+        options.pathsep = argv.shift();
+        break;
       case '-c':
       case '--config':
         options.config = argv.shift();
@@ -126,6 +131,7 @@ function helpMessage() {
     '    -b, --bind <port>      The port or unix path to listen',
     '    --host <host>          The hostname to listen [localhost]',
     '    --path <path>          The pathname to listen [null]',
+    '    --pathsep <str>        Charater for pathsep [#]',
     '    -c, --config <file>    Specify a configuration file',
     '    -r, --redirects <num>  Max redirects allowed, default is 4',
     '    -s, --secret <token>   A secret token to encrypto urls',
