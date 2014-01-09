@@ -17,6 +17,7 @@ const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(
 var _options = {
   // only allow 4-loop redirects
   basePath: null,
+  pathsep: '#',
   maxRedirects: 4,
   // only allow images < 5M
   contentLength: 5242880,
@@ -58,7 +59,8 @@ function decodeSrc(src) {
   }
 
   uri += domain.slice(1).split('').reverse().join('') + '/';
-  uri += decodeURIComponent(urlpath).replace(/#/g, '/');
+  var repl = new RegExp(_options.pathsep, 'g');
+  uri += decodeURIComponent(urlpath).replace(repl, '/');
   return {uri: uri, digest: digest};
 }
 
