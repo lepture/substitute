@@ -19,7 +19,7 @@ describe('proxy image', function() {
   });
 
   it('should proxy valid image url', function(done) {
-    equalStatus('http://img3.douban.com/view/photo/photo/public/p1487563850.jpg', 200, done);
+    equalStatus('http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png', 200, done);
   });
 
   it.skip('must request with referer', function(done) {
