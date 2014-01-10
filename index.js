@@ -11,7 +11,7 @@ var currentConnections = 0;
 var totalConnections = 0;
 var startedTime = new Date();
 
-const RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(2[0-9])|(3[0-1]))))/;
+var RESTRICTED_IPS = /^((10\.)|(127\.)|(169\.254)|(192\.168)|(172\.((1[6-9])|(2[0-9])|(3[0-1]))))/;
 
 
 var _options = {
@@ -50,9 +50,9 @@ function decodeSrc(src) {
 
   var protocol = domain.charAt(0);
 
-  if (protocol == '0') {
+  if (protocol === '0') {
     uri += 'http://';
-  } else if (protocol == '1') {
+  } else if (protocol === '1') {
     uri += 'https://';
   } else {
     return null;
@@ -84,11 +84,11 @@ function createServer(secretKey, options) {
       }
     }
 
-    if (req.headers['via'] && req.headers['via'] == viaHeader) {
+    if (req.headers['via'] && req.headers['via'] === viaHeader) {
       return abort404(resp, 'Requesting from self');
     }
 
-    if (req.method != 'GET' || pathname === '/') {
+    if (req.method !== 'GET' || pathname === '/') {
       resp.writeHead(200);
       return resp.end('humor');
     } else if (pathname === '/favicon.ico') {
@@ -212,7 +212,7 @@ function proxy(uri, headers, resp, redirects) {
         isFinished = false;
         var newUrl = imgResp.headers['location'];
         var newUri = url.parse(newUrl);
-        if (!((newUri.host != null) && (newUri.hostname != null))) {
+        if (!((newUri.host !== null) && (newUri.hostname !== null))) {
           newUri.host = newUri.hostname = uri.hostname;
           newUri.protocol = uri.protocol;
         }
