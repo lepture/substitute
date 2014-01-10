@@ -39,13 +39,13 @@ function decodeSrc(src) {
   var uri = '';
 
   var m = src.split('/');
-  if (m.length !== 3) {
+  if (m.length < 3) {
     return null;
   }
 
   var domain = m[0];
   var digest = m[1];
-  var urlpath = m[2];
+  var urlpath = m.slice(2).join('/');
 
   var protocol = domain.charAt(0);
 
