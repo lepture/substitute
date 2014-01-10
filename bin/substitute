@@ -5,7 +5,7 @@ main(process.argv.slice(2));
 function main(argv) {
   var _defaults = {
     bind: 8000,
-    host: 'localhost',
+    host: '0.0.0.0',
     quiet: false,
     secret: '0x24FEEDFACEDEADBEEFCAFE',
     basePath: null,
@@ -125,7 +125,7 @@ function helpMessage() {
     '  Options:',
     '',
     '    -b, --bind <port>      The port or unix path to listen',
-    '    --host <host>          The hostname to listen [localhost]',
+    '    --host <host>          The hostname to listen [0.0.0.0]',
     '    --path <path>          The pathname to listen [null]',
     '    -c, --config <file>    Specify a configuration file',
     '    -r, --redirects <num>  Max redirects allowed, default is 4',
