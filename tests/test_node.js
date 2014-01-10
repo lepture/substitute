@@ -109,7 +109,7 @@ describe('proxy image', function() {
 
   it('can handle invalid protocal', function(done) {
     var server = createServer(secretKey);
-    request('9moc.dlrowsmuabe.aidem/48f589a429000f26b790eb3e33f6a685/picture%23Mincemeat%23Pimp.jpg', function(resp) {
+    request('9moc.dlrowsmuabe.aidem/48f589a429000f26b790eb3e33f6a685/picture/Mincemeat/Pimp.jpg', function(resp) {
       equal(resp.statusCode, 404);
       done();
     });

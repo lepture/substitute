@@ -4,7 +4,6 @@ function Substitute(options) {
   options = options || {};
   this.server = options.server || '';
   this.secret = options.secret || '0x24FEEDFACEDEADBEEFCAFE';
-  this.pathsep = options.pathsep || '#';
 }
 
 /**
@@ -32,7 +31,6 @@ Substitute.prototype.link = function(src) {
   var urlpath = '';
   if (m[3]) {
     urlpath = m[3].replace(/#.*$/, '');
-    urlpath = urlpath.replace(/\//g, this.pathsep);
   }
 
   return this.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
