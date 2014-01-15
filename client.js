@@ -11,8 +11,6 @@ function Substitute(options) {
  */
 Substitute.prototype.link = function(src) {
   // domain/digest/path
-  var digest = md5.hmac(this.secret, src);
-
   var regex = /(https?)\:\/\/([^\/]+)\/?(.*)?$/;
 
   var m = src.match(regex);
@@ -30,9 +28,10 @@ Substitute.prototype.link = function(src) {
 
   var urlpath = '';
   if (m[3]) {
-    urlpath = m[3].replace(/#.*$/, '');
+    urlpath = realpath(m[3].replace(/#.*$/, ''));
   }
-
+  src = m[1] + '://' + m[2] + '/' + urlpath;
+  var digest = md5.hmac(this.secret, src);
   return this.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
 };
 
@@ -51,6 +50,24 @@ Substitute.prototype.image = function(html, filter) {
   return html;
 };
 
+var DOT_RE = /\/\.\//g;
+var DOUBLE_DOT_RE = /\/[^/]+\/\.\.\//;
+var DOUBLE_SLASH_RE = /([^:/])\/\//g;
+
+function realpath(path) {
+  path = path.replace(/^\.*\//, '');
+  // /a/b/./c/./d ==> /a/b/c/d
+  path = path.replace(DOT_RE, "/");
+
+  // a/b/c/../../d  ==>  a/b/../d  ==>  a/d
+  while (path.match(DOUBLE_DOT_RE)) {
+    path = path.replace(DOUBLE_DOT_RE, "/");
+  }
+
+  // a//b/c  ==>  a/b/c
+  path = path.replace(DOUBLE_SLASH_RE, "$1/");
+  return path;
+}
 
 /**
  * Exports substitute API.
