@@ -4,7 +4,7 @@ var crypto = require('crypto');
 var createServer = require('../');
 var client = require('../client');
 
-var PORT = 9060;
+var PORT = 9000;
 var secretKey = 'secret';
 client.secret = secretKey;
 
@@ -102,8 +102,8 @@ describe('proxy image', function() {
       res.writeHead(304);
       res.end('ok');
     });
-    server.listen(90304, function() {
-      equalStatus('http://localhost:90304/', 304, done);
+    server.listen(9304, function() {
+      equalStatus('http://localhost:9304/', 304, done);
     });
   });
 
