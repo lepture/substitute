@@ -19,10 +19,8 @@ Substitute.prototype.link = function(src) {
   }
 
   var domain = '';
-  if (m[1] === 'http') {
-    domain += '0';
-  } else {
-    domain += '1';
+  if (m[1] === 'https') {
+    domain += '-';
   }
   domain += m[2].split('').reverse().join('');
 
@@ -32,7 +30,7 @@ Substitute.prototype.link = function(src) {
   }
   src = m[1] + '://' + m[2] + '/' + urlpath;
   var digest = md5.hmac(this.secret, src);
-  return this.server + domain + '/' + digest + '/' + encodeURIComponent(urlpath);
+  return this.server + domain + '/' + digest + '/' + urlpath;
 };
 
 /**

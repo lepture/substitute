@@ -47,7 +47,7 @@ http://example.org/<reverse-domain>/<digest>/<image-path>
 The `<digest>` is a 32 character hex encoded HMAC digest with a secret in md5 hash. And the `<image-path>` should be an ecoded/escaped replaced '/' uri.
 
 ```
-http://example.org/0moc.dlrowsmuabe.aidem/d42a08bfa19e5b526b0d2d53eb3b106c/picture/Mincemeat/Pimp.jpg
+http://example.org/moc.dlrowsmuabe.aidem/d42a08bfa19e5b526b0d2d53eb3b106c/picture/Mincemeat/Pimp.jpg
 ```
 
 
@@ -79,7 +79,7 @@ Test it manally, start a server:
 $ substitute
 ```
 
-And then visit: [this link](http://localhost:8000/0moc.dlrowsmuabe.aidem/d42a08bfa19e5b526b0d2d53eb3b106c/picture/Mincemeat/Pimp.jpg).
+And then visit: [this link](http://localhost:8000/moc.dlrowsmuabe.aidem/d42a08bfa19e5b526b0d2d53eb3b106c/picture/Mincemeat/Pimp.jpg).
 
 Test it automatically with mocha:
 

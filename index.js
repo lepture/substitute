@@ -49,16 +49,15 @@ function decodeSrc(src) {
 
   var protocol = domain.charAt(0);
 
-  if (protocol === '0') {
-    uri += 'http://';
-  } else if (protocol === '1') {
+  if (protocol === '-') {
     uri += 'https://';
+    domain = domain.slice(1);
   } else {
-    return null;
+    uri += 'http://';
   }
 
-  uri += domain.slice(1).split('').reverse().join('') + '/';
-  uri += decodeURIComponent(urlpath);
+  uri += domain.split('').reverse().join('') + '/';
+  uri += urlpath;
   return {uri: uri, digest: digest};
 }
 
