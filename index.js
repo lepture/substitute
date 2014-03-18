@@ -111,7 +111,7 @@ function createServer(secretKey, options) {
     delete req.headers.cookie;
     var uri = url.parse(pathname);
 
-    var ref = decodeSrc(uri.pathname.replace(/^\//, ''));
+    var ref = decodeSrc(uri.path.replace(/^\//, ''));
 
     if (ref) {
       var hmac = crypto.createHmac('md5', secretKey);
