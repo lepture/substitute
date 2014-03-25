@@ -46,8 +46,6 @@ function decodeSrc(src) {
   var domain = m[0];
   var digest = m[1];
   var urlpath = m.slice(2).join('/');
-  urlpath = decodeURIComponent(urlpath);
-
   var protocol = domain.charAt(0);
 
   if (protocol === '-') {
@@ -120,7 +118,7 @@ function createServer(secretKey, options) {
         return abort404(resp, 'Digest does not match');
       }
       server.emit('proxy', ref.uri);
-      return proxy(ref.uri, headers, resp, _options.maxRedirects || 4);
+      return proxy(decodeURI(ref.uri), headers, resp, _options.maxRedirects || 4);
     } else {
       return abort404(resp, 'Missing pathname');
     }

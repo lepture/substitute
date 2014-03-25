@@ -20,7 +20,7 @@ describe('substitute', function() {
 
   it('can generate url', function() {
     equal(
-      'moc.oof/11f7137f6ab2e19167dec729cafa658a/bar%2Fbaz.jpg',
+      'moc.oof/11f7137f6ab2e19167dec729cafa658a/bar/baz.jpg',
       substitute.link('http://foo.com/bar/baz.jpg')
     );
 

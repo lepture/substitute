@@ -10,6 +10,7 @@ function Substitute(options) {
  * Generate substitute link
  */
 Substitute.prototype.link = function(src) {
+  src = encodeURI(src);
   // domain/digest/path
   var regex = /(https?)\:\/\/([^\/]+)\/?(.*)?$/;
 
@@ -30,7 +31,6 @@ Substitute.prototype.link = function(src) {
   }
   src = m[1] + '://' + m[2] + '/' + urlpath;
   var digest = md5.hmac(this.secret, src);
-  urlpath = encodeURIComponent(urlpath);
   return this.server + domain + '/' + digest + '/' + urlpath;
 };
 
