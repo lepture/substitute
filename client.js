@@ -29,7 +29,6 @@ Substitute.prototype.link = function(src) {
   if (m[3]) {
     urlpath = realpath(m[3].replace(/#.*$/, ''));
   }
-  src = m[1] + '://' + m[2] + '/' + urlpath;
   var digest = md5.hmac(this.secret, src);
   urlpath = encodeURIComponent(urlpath);
   return this.server + domain + '/' + digest + '/' + urlpath;

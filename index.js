@@ -115,7 +115,11 @@ function createServer(secretKey, options) {
     if (ref) {
       var hmac = crypto.createHmac('md5', secretKey);
       hmac.update(ref.uri);
-      if (hmac.digest('hex') !== ref.digest) {
+      var digests = [hmac.digest('hex')];
+      hmac = crypto.createHmac('md5', secretKey);
+      hmac.update(encodeURI(ref.uri));
+      digests.push(hmac.digest('hex'));
+      if (!~digests.indexOf(ref.digest)) {
         return abort404(resp, 'Digest does not match');
       }
       server.emit('proxy', ref.uri);
