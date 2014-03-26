@@ -26,6 +26,10 @@ describe('proxy image', function() {
     equalStatus('http://mweb.baidu.com/wp-content/uploads/2012/12/图片1.png', 200, done);
   });
 
+  it('should valid with image query', function(done) {
+    equalStatus('http://zhouguangming.qiniudn.com/2014-03-23-001.jpg?imageView/0/w/650', 200, done);
+  });
+
   it.skip('must request with referer', function(done) {
     equalStatus('http://www.zhengtan.me/wp-content/uploads/2012/09/Wtc-2004-memorial.jpg', 200, done);
   });

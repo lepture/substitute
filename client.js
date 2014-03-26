@@ -31,6 +31,7 @@ Substitute.prototype.link = function(src) {
   }
   src = m[1] + '://' + m[2] + '/' + urlpath;
   var digest = md5.hmac(this.secret, src);
+  urlpath = urlpath.replace('?', '%3F');
   return this.server + domain + '/' + digest + '/' + urlpath;
 };
 

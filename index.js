@@ -46,6 +46,7 @@ function decodeSrc(src) {
   var domain = m[0];
   var digest = m[1];
   var urlpath = m.slice(2).join('/');
+  urlpath = urlpath.replace('%3F', '?');
   var protocol = domain.charAt(0);
 
   if (protocol === '-') {
