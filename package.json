@@ -1,6 +1,6 @@
 {
   "name": "substitute",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": "Hsiaoming Yang <me@lepture.com>",
   "homepage": "https://github.com/lepture/substitute",
   "description": "A proxy image server",
