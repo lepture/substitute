@@ -3,6 +3,7 @@ var url = require('url');
 var crypto = require('crypto');
 var path = require('path');
 var format = require('util').format;
+var EventEmitter = require('events').EventEmitter;
 
 var version = require('./package').version;
 var viaHeader = 'Substitute ' + version;
@@ -22,6 +23,8 @@ var _options = {
   contentLength: 5242880,
   excludedHosts: /.*\.example\.com/
 };
+
+var emitter = new EventEmitter();
 
 
 /**
@@ -65,10 +68,10 @@ function decodeSrc(src) {
 /**
  * Create the substitute server.
  */
-function createServer(secretKey, options) {
+function createHandler(secretKey, options) {
   defaults(options);
 
-  var server = http.createServer(function(req, resp) {
+  return function(req, resp) {
     var pathname = req.url;
 
     if (_options.basePath) {
@@ -122,18 +125,24 @@ function createServer(secretKey, options) {
       if (!~digests.indexOf(ref.digest)) {
         return abort404(resp, 'Digest does not match');
       }
-      server.emit('proxy', ref.uri);
+      emitter.emit('proxy', ref.uri);
       return proxy(decodeURI(ref.uri), headers, resp, _options.maxRedirects || 4);
     } else {
       return abort404(resp, 'Missing pathname');
     }
-  });
+  };
+}
 
-  abort404.server = server;
+function createServer(secretKey, options) {
+  var server = http.createServer(createHandler(secretKey, options));
+  emitter = server;
   return server;
 }
+
 createServer.version = version;
 createServer.defaults = defaults;
+createServer.createHandler = createHandler;
+createServer.emitter = emitter;
 module.exports = createServer;
 
 
@@ -238,10 +247,7 @@ function proxy(uri, headers, resp, redirects) {
 function abort404(resp, msg) {
   msg = msg || 'Not Found';
   resp.writeHead(404);
-
-  if (abort404.server) {
-    abort404.server.emit('abort', msg);
-  }
+  emitter.emit('abort', msg);
   finish(resp, msg);
 }
 
