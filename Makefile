@@ -6,7 +6,7 @@ coverage:
 test:
 	@node_modules/.bin/component install
 	@rm -fr node_modules/md5
-	@mv components/enyo-md5 node_modules/md5
+	@mv components/enyo/md5/master node_modules/md5
 	@$(test_node)
 
 coveralls:

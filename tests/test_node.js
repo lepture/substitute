@@ -1,12 +1,11 @@
 var url = require('url');
 var http = require('http');
 var crypto = require('crypto');
-var createServer = require('../');
+var createServer = require('../').digestServer;
 var client = require('../client');
 
 var PORT = 9000;
 var secretKey = 'secret';
-client.secret = secretKey;
 
 
 describe('proxy image', function() {
@@ -22,11 +21,11 @@ describe('proxy image', function() {
     equalStatus('http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png', 200, done);
   });
 
-  it('should encode & decode well', function(done) {
+  it.skip('should encode & decode well', function(done) {
     equalStatus('http://mweb.baidu.com/wp-content/uploads/2012/12/图片1.png', 200, done);
   });
 
-  it('should valid with image query', function(done) {
+  it.skip('should valid with image query', function(done) {
     equalStatus('http://zhouguangming.qiniudn.com/2014-03-23-001.jpg?imageView/0/w/650', 200, done);
   });
 
@@ -63,11 +62,7 @@ describe('proxy image', function() {
     });
   });
 
-  it('can change defaults', function(done) {
-    createServer.defaults({
-      maxRedirects: 4,
-      excludedHosts: ['example.com']
-    });
+  it('is invalid hosts', function(done) {
     equalStatus('http://example.com/foo', 404, done);
   });
 
@@ -132,7 +127,9 @@ function request(uri, port, cb) {
     PORT = PORT + 1;
   }
 
-  var server = createServer(secretKey);
+  var server = createServer(secretKey, {level: 'quiet', timeout: 5000});
+  client.secret = secretKey;
+
   server.listen(port, function() {
     if (/https?\:\/\//.test(uri)) {
       uri = client.link(uri);
