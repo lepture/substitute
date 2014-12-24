@@ -17,4 +17,4 @@ Thumbs.db
 *.log
 node_modules/
 components
-coverage.html
+coverage/

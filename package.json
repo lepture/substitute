@@ -18,23 +18,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "mocha": "*",
-    "mocha-lcov-reporter": "*",
-    "blanket": "*",
     "component": "*",
-    "coveralls": "*"
+    "istanbul": "^0.3.5",
+    "mocha": "^2.1.0"
   },
   "scripts": {
-    "test": "make test"
-  },
-  "config": {
-    "blanket": {
-      "pattern": [
-        "index.js",
-        "client.js"
-      ],
-      "data-cover-never": "node_modules"
-    }
+    "test": "node_modules/.bin/mocha",
+    "test-cov": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha --bail",
+    "test-lcov": "node_modules/.bin/istanbul cover node_modules/.bin/_mocha --report lcovonly --bail"
   },
   "bin": {
     "substitute": "bin/substitute"
