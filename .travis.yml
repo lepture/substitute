@@ -3,7 +3,9 @@ node_js:
   - "0.10"
   - "0.11"
 
-script: npm run-script test-lcov
+script:
+  - make prepare
+  - npm run-script test-lcov
 
 after_success:
   - npm install coveralls

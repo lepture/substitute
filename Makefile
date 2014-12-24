@@ -1,19 +1,13 @@
-test_node = node_modules/.bin/mocha tests/test_node.js tests/test_browser.js
-
-coverage:
-	@$(test_node) --require blanket -R html-cov > coverage.html
-
-test:
+prepare:
 	@node_modules/.bin/component install
 	@rm -fr node_modules/md5
 	@mv components/enyo/md5/master node_modules/md5
-	@$(test_node)
 
-coveralls:
-	@$(test_node) --require blanket -R mocha-lcov-reporter | node_modules/.bin/coveralls
+coverage:
+	@npm run-script test-cov
 
-components: component.json
-	@component install --dev
+test: prepare
+	@npm test
 
 build: components client.js
 	@component build --dev
@@ -30,4 +24,4 @@ coverage-client: components
 	@mocha-browser tests/index.html -R html-cov > coverage.html
 
 
-.PHONY: test coverage coveralls components build test-client
+.PHONY: prepare test coverage
