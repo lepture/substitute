@@ -93,7 +93,10 @@ function main(argv) {
     }
   });
 
-  var createServer = require('..');
+  var createServer = require('..').digestServer;
+  if (options.quiet) {
+    options.level = 'quiet';
+  }
   var server = createServer(options.secret, options);
   console.log('Start serving at http://' + options.host + ':' + options.bind);
   if (!options.quiet) {
@@ -102,13 +105,7 @@ function main(argv) {
         console.log(res.statusCode + ' - ' + req.method + ' - ' + req.url);
       });
     });
-    server.on('proxy', function(uri) {
-      console.log('100 - PROXY - ' + uri);
-    });
   }
-  server.on('abort', function(msg) {
-    console.log('400 - ABORT - ' + msg);
-  });
 
   if (parseInt(options.bind)) {
     server.listen(options.bind, options.host);
