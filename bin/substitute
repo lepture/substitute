@@ -93,7 +93,12 @@ function main(argv) {
     }
   });
 
-  var createServer = require('..').digestServer;
+  var createServer;
+  if (options.secret.indexOf('x-substitute') === 0) {
+    createServer = require('..').proxyServer;
+  } else {
+    createServer = require('..').digestServer;
+  }
   if (options.quiet) {
     options.level = 'quiet';
   }
